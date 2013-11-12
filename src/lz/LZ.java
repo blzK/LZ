@@ -5,10 +5,18 @@
  */
 package lz;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-/** 
+/**
  *
  * @author azathoth
  */
@@ -16,9 +24,42 @@ public class LZ {
 
     public Map<String, Integer> dict = new LinkedHashMap<>();
     public Map<Integer, String> dictDecod = new LinkedHashMap<>();
-    public StringBuilder code = new StringBuilder("");//public Map< Integer, Character> code = new LinkedHashMap<>();
+    public StringBuilder code = new StringBuilder("");
     private int alpha = 0;
     public StringBuilder decode = new StringBuilder("");
+    public StringBuilder data = new StringBuilder("");
+
+    public LZ() {
+
+    }
+
+    public LZ(String[] args) {
+
+        File file = new File(args[1]);
+
+        FileInputStream in;
+        try {
+            in = new FileInputStream(file);
+            BufferedInputStream in2 = new BufferedInputStream(in);
+            DataInputStream in3 = new DataInputStream(in2);
+            while (in3.available() > 0) {
+                data.append(in3.readLine());
+                data.append("\n");
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(LZ.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(LZ.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void code() {
+        code(data.toString());
+    }
+
+    public void decode() {
+        decode(data.toString());
+    }
 
     public void code(String s) {
         int i = 0;
